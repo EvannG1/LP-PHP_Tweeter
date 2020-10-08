@@ -7,7 +7,7 @@ require_once 'src/mf/utils/ClassLoader.php';
 $loader = new \mf\utils\ClassLoader('src');
 $loader->register();
 
-use \tweeterapp\model\User;
+use \tweeterapp\model;
 
 $config = parse_ini_file('conf/config.ini');
 
@@ -17,9 +17,25 @@ $db->addConnection($config);
 $db->setAsGlobal();
 $db->bootEloquent();
 
-$req = User::select();
-$lignes = $req->get();
+// $tweets = model\Tweet::select()->orderBy('updated_at')->get();
+// foreach($tweets as $t) {
+//     echo <<<HTML
+//     <ul>
+//         <li>$t->text</li>
+//     </ul>
+//     HTML;
+// }
 
-foreach($lignes as $u) {
-    echo 'Nom complet : ' . $u->fullname;
-}
+// echo '<hr>';
+
+// $positifs = model\Tweet::select()->where('score', '>', 0)->get();
+// foreach($positifs as $p) {
+//     echo <<<HTML
+//     <ul>
+//         <li>$p->text</li>
+//     </ul>
+//     HTML;
+// }
+
+$u = model\User::where('id', '=', 1)->first();
+$liste_tweets = $u->tweets()->get();

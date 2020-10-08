@@ -8,4 +8,8 @@ class Tweet extends \Illuminate\Database\Eloquent\Model {
     protected $primaryKey = 'id';
     public $timestamps = true;
 
+    public function author() {
+        return $this->belongsTo('User', 'author');
+    }
+
 }
