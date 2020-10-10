@@ -9,7 +9,7 @@ class Tweet extends \Illuminate\Database\Eloquent\Model {
     public $timestamps = true;
 
     public function author() {
-        return $this->belongsTo('User', 'author');
+        return $this->belongsTo('\tweeterapp\model\User', 'author');
     }
 
 }
