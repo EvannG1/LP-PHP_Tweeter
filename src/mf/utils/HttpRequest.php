@@ -1,5 +1,7 @@
 <?php
 
+namespace mf\utils;
+
 class HttpRequest extends AbstractHttpRequest {
     
     public function __construct() {

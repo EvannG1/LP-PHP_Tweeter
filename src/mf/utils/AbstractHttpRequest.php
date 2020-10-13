@@ -1,5 +1,7 @@
 <?php
 
+namespace mf\utils;
+
 abstract class AbstractHttpRequest {
 
     protected $script_name=null, $path_info=null, $root=null;

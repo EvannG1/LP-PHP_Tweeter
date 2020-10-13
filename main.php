@@ -3,6 +3,8 @@
 require_once 'vendor/autoload.php';
 require_once 'src/mf/utils/AbstractClassLoader.php';
 require_once 'src/mf/utils/ClassLoader.php';
+require_once 'src/mf/router/AbstractRouter.php';
+require_once 'src/mf/router/Router.php';
 
 $loader = new \mf\utils\ClassLoader('src');
 $loader->register();
@@ -17,25 +19,23 @@ $db->addConnection($config);
 $db->setAsGlobal();
 $db->bootEloquent();
 
-// $tweets = model\Tweet::select()->orderBy('updated_at')->get();
-// foreach($tweets as $t) {
-//     echo <<<HTML
-//     <ul>
-//         <li>$t->text</li>
-//     </ul>
-//     HTML;
-// }
 
-// echo '<hr>';
 
-// $positifs = model\Tweet::select()->where('score', '>', 0)->get();
-// foreach($positifs as $p) {
-//     echo <<<HTML
-//     <ul>
-//         <li>$p->text</li>
-//     </ul>
-//     HTML;
-// }
+$router = new \mf\router\Router();
 
-$u = model\User::where('id', '=', 1)->first();
-$liste_tweets = $u->tweets()->get();
+$router->addRoute('maison',
+                  '/home/',
+                  '\tweeterapp\control\TweeterController',
+                  'viewHome');
+
+$router->setDefaultRoute('/home/');
+
+print_r(\mf\router\Router::$routes);
+
+echo $router->run();
+
+
+
+
+// $ctrl = new \tweeterapp\control\TweeterController();
+// echo $ctrl->viewHome();
