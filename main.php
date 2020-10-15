@@ -23,19 +23,12 @@ $db->bootEloquent();
 
 $router = new \mf\router\Router();
 
-$router->addRoute('maison',
-                  '/home/',
-                  '\tweeterapp\control\TweeterController',
-                  'viewHome');
+$router->addRoute('home', '/home/', '\tweeterapp\control\TweeterController', 'viewHome');
+$router->addRoute('view', '/view/', '\tweeterapp\control\TweeterController', 'viewTweet');
+$router->addRoute('user', '/user/', '\tweeterapp\control\TweeterController', 'viewUserTweets');
 
 $router->setDefaultRoute('/home/');
 
-print_r(\mf\router\Router::$routes);
+$router->run();
 
-echo $router->run();
-
-
-
-
-// $ctrl = new \tweeterapp\control\TweeterController();
-// echo $ctrl->viewHome();
+//print_r(\mf\router\Router::$routes);

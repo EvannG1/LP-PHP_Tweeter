@@ -67,7 +67,7 @@ class TweeterController extends \mf\control\AbstractController {
             <hr>
             HTML;
         }
-        return $result;
+        echo $result;
     }
 
 
@@ -95,6 +95,33 @@ class TweeterController extends \mf\control\AbstractController {
          * 
          */
 
+
+        if(isset($this->request->get['id'])) {
+            $id = $this->request->get['id'];
+
+            $t = \tweeterapp\model\Tweet::select()->where('id', '=', $id)->first();
+            
+            $get_author = $t->author()->first();
+            $author = $get_author->fullname;
+
+            $result = <<<HTML
+
+            <div>
+                <div>
+                    $t->text
+                </div>
+                <div>
+                    Posté le : $t->created_at par $author
+                </div>
+                <hr>
+                <div>
+                    $t->score
+                </div>
+            </div>
+            HTML;
+            
+            echo $result;
+        }
     }
 
 
@@ -124,5 +151,37 @@ class TweeterController extends \mf\control\AbstractController {
          * 
          */
         
+        if(isset($this->request->get['id'])) {
+            $id = $this->request->get['id'];
+            $result = '';
+
+            $tweets = \tweeterapp\model\Tweet::select()->where('author', '=', $id)->get();
+            $get_author = \tweeterapp\model\Tweet::select()->where('author', '=', $id)->first();
+            $author = $get_author->author()->first();
+
+            $author_infos = <<<HTML
+                <div style='text-align:center;'>
+                    <h1>$author->fullname</h1>
+                    <p>$author->username</p>
+                    <p>$author->followers followers</p>
+                </div>
+            HTML;
+            
+            foreach($tweets as $t) {
+
+                $result .= <<<HTML
+                <div>
+                    <div>
+                        $t->text
+                    </div>
+                    <div>
+                        Posté le : $t->created_at par $author->fullname
+                    </div>
+                </div>
+                <hr>
+                HTML;
+            }
+            echo $author_infos . $result;
+        }
     }
 }
