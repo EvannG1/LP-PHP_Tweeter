@@ -48,29 +48,10 @@ class TweeterController extends \mf\control\AbstractController {
          *  3 Retourner un block HTML qui met en forme la liste
          * 
          */
-        $tweets = \tweeterapp\model\Tweet::select()->get();
-        $result = '';
-        foreach($tweets as $t) {
 
-            $get_author = $t->author()->first();
-            $author = $get_author->fullname;
-
-            $router = new \mf\router\Router();
-            $link = $router->urlFor('view', array('id' => $t->id));
-            
-            $result .= <<<HTML
-            <div>
-                <div>
-                    <a href="$link">$t->text</a>
-                </div>
-                <div>
-                    Posté le : $t->created_at par $author
-                </div>
-            </div>
-            <hr>
-            HTML;
-        }
-        echo $result;
+        $tweets = \tweeterapp\model\Tweet::all();
+        $vue = new \tweeterapp\view\TweeterView($tweets);
+        $vue->render('renderHome');
     }
 
 
@@ -99,31 +80,16 @@ class TweeterController extends \mf\control\AbstractController {
          */
 
 
-        if(isset($this->request->get['id'])) {
+        if(!isset($this->request->get['id']) || empty($this->request->get['id'])) {
+            $router = new \mf\router\Router();
+            $home = $router->urlFor('home');
+            header("Location:$home");
+            exit;
+        } else {
             $id = $this->request->get['id'];
-
-            $t = \tweeterapp\model\Tweet::select()->where('id', '=', $id)->first();
-            
-            $get_author = $t->author()->first();
-            $author = $get_author->fullname;
-
-            $result = <<<HTML
-
-            <div>
-                <div>
-                    $t->text
-                </div>
-                <div>
-                    Posté le : $t->created_at par $author
-                </div>
-                <hr>
-                <div>
-                    $t->score
-                </div>
-            </div>
-            HTML;
-            
-            echo $result;
+            $tweet = \tweeterapp\model\Tweet::select()->where('id', '=', $id)->first();
+            $vue = new \tweeterapp\view\TweeterView($tweet);
+            $vue->render('renderViewTweet');
         }
     }
 
@@ -156,35 +122,9 @@ class TweeterController extends \mf\control\AbstractController {
         
         if(isset($this->request->get['id'])) {
             $id = $this->request->get['id'];
-            $result = '';
-
             $tweets = \tweeterapp\model\Tweet::select()->where('author', '=', $id)->get();
-            $get_author = \tweeterapp\model\Tweet::select()->where('author', '=', $id)->first();
-            $author = $get_author->author()->first();
-
-            $author_infos = <<<HTML
-                <div style='text-align:center;'>
-                    <h1>$author->fullname</h1>
-                    <p>$author->username</p>
-                    <p>$author->followers followers</p>
-                </div>
-            HTML;
-            
-            foreach($tweets as $t) {
-
-                $result .= <<<HTML
-                <div>
-                    <div>
-                        $t->text
-                    </div>
-                    <div>
-                        Posté le : $t->created_at par $author->fullname
-                    </div>
-                </div>
-                <hr>
-                HTML;
-            }
-            echo $author_infos . $result;
+            $vue = new \tweeterapp\view\TweeterView($tweets);
+            $vue->render('renderUserTweets');
         }
     }
 }
