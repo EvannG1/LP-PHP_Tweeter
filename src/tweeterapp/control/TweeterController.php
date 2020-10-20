@@ -54,14 +54,17 @@ class TweeterController extends \mf\control\AbstractController {
 
             $get_author = $t->author()->first();
             $author = $get_author->fullname;
+
+            $router = new \mf\router\Router();
+            $link = $router->urlFor('view', array('id' => $t->id));
             
             $result .= <<<HTML
             <div>
                 <div>
-                $t->text
+                    <a href="$link">$t->text</a>
                 </div>
                 <div>
-                Posté le : $t->created_at par $author
+                    Posté le : $t->created_at par $author
                 </div>
             </div>
             <hr>

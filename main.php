@@ -3,8 +3,6 @@
 require_once 'vendor/autoload.php';
 require_once 'src/mf/utils/AbstractClassLoader.php';
 require_once 'src/mf/utils/ClassLoader.php';
-require_once 'src/mf/router/AbstractRouter.php';
-require_once 'src/mf/router/Router.php';
 
 $loader = new \mf\utils\ClassLoader('src');
 $loader->register();
@@ -30,5 +28,3 @@ $router->addRoute('user', '/user/', '\tweeterapp\control\TweeterController', 'vi
 $router->setDefaultRoute('/home/');
 
 $router->run();
-
-//print_r(\mf\router\Router::$routes);

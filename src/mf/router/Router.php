@@ -10,7 +10,7 @@ class Router extends AbstractRouter {
     
     public function addRoute($name, $url, $ctrl, $mth) {
         self::$routes[$url] = array($ctrl, $mth);
-        self::$aliases[$name] = array($url);
+        self::$aliases[$name] = $url;
     }
 
     public function setDefaultRoute($url) {
@@ -18,7 +18,17 @@ class Router extends AbstractRouter {
     }
 
     public function urlFor($route_name, $param_list=[]) {
-        // Do something
+        $route = self::$aliases[$route_name];
+        $urlFor = $this->http_req->script_name . $route;
+
+        if(!empty($param_list)) {
+            $key = array_keys($param_list);
+            $value = array_values($param_list);
+
+            $urlFor .= '?' . $key[0] . '=' . $value[0];
+        }
+
+        return $urlFor;
     }
 
     public function run() {
@@ -40,7 +50,7 @@ class Router extends AbstractRouter {
     }
 
     public static function executeRoute($route) {
-        $aliases = self::$aliases[$route][0];
+        $aliases = self::$aliases[$route];
 
         $controller = self::$routes[$aliases][0];
         $method = self::$routes[$aliases][1];
