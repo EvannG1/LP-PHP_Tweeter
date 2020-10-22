@@ -172,7 +172,20 @@ class TweeterView extends \mf\view\AbstractView {
          * d'un tweet, l'action (bouton de validation) du formulaire est la route "/send/"
          *
          */
-        
+
+        $router = new \mf\router\Router();
+        $urlPost = $router->urlFor('send');
+
+         $result = <<<HTML
+            <article class="theme-backcolor2">
+                <form method="POST" action="$urlPost">
+                    <textarea name="tweet_content" rows="7" cols="50" required></textarea>
+                    <br><br>
+                    <button type="submit" name="submit">Poster le Tweet</button>
+                </form>
+            </article>
+         HTML;
+         return $result;
     }
 
 

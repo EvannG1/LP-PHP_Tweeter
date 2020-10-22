@@ -127,4 +127,16 @@ class TweeterController extends \mf\control\AbstractController {
             $vue->render('renderUserTweets');
         }
     }
+
+    public function viewPostTweet() {
+        $vue = new \tweeterapp\view\TweeterView(null);
+        $vue->render('renderPostTweet');
+    }
+
+    public function postTweet() {
+        if(isset($this->request->post['submit'])) {
+            $post = htmlentities($this->request->post['tweet_content']);
+            \tweeterapp\model\Tweet::insert(['text' => $post, 'author' => 7, 'score' => 0]);
+        }
+    }
 }
