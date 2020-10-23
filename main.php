@@ -16,10 +16,10 @@ $db->setAsGlobal();
 $db->bootEloquent();
 
 $router = new \mf\router\Router();
-$router->addRoute('home', '/home/', '\tweeterapp\control\TweeterController', 'viewHome');
-$router->addRoute('view', '/view/', '\tweeterapp\control\TweeterController', 'viewTweet');
-$router->addRoute('user', '/user/', '\tweeterapp\control\TweeterController', 'viewUserTweets');
-$router->addRoute('post', '/post/', '\tweeterapp\control\TweeterController', 'viewPostTweet');
-$router->addRoute('send', '/send/', '\tweeterapp\control\TweeterController', 'postTweet');
+$router->addRoute('home', '/home/', '\tweeterapp\control\TweeterController', 'viewHome', \tweeterapp\auth\TweeterAuthentification::ACCESS_LEVEL_NONE);
+$router->addRoute('view', '/view/', '\tweeterapp\control\TweeterController', 'viewTweet', \tweeterapp\auth\TweeterAuthentification::ACCESS_LEVEL_NONE);
+$router->addRoute('user', '/user/', '\tweeterapp\control\TweeterController', 'viewUserTweets', \tweeterapp\auth\TweeterAuthentification::ACCESS_LEVEL_NONE);
+$router->addRoute('post', '/post/', '\tweeterapp\control\TweeterController', 'viewPostTweet', \tweeterapp\auth\TweeterAuthentification::ACCESS_LEVEL_USER);
+$router->addRoute('send', '/send/', '\tweeterapp\control\TweeterController', 'postTweet', \tweeterapp\auth\TweeterAuthentification::ACCESS_LEVEL_USER);
 $router->setDefaultRoute('/home/');
 $router->run();

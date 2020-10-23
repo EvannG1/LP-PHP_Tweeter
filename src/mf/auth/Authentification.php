@@ -44,7 +44,7 @@ class Authentification extends AbstractAuthentification {
         if($this->verifyPassword($given_pass, $db_pass)) {
             $this->updateSession($username, $level);
         } else {
-            throw new \Exception('Erreur! Mot de passe invalide');
+            throw new \AuthentificationException('Erreur! Mot de passe invalide');
         }
     }
     
