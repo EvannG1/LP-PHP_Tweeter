@@ -139,4 +139,9 @@ class TweeterController extends \mf\control\AbstractController {
             \tweeterapp\model\Tweet::insert(['text' => $post, 'author' => 7, 'score' => 0]);
         }
     }
+
+    public function viewLogin() {
+        $vue = new \tweeterapp\view\TweeterView(null);
+        $vue->render('renderLogin');
+    }
 }

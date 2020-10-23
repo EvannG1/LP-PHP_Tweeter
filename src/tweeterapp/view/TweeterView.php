@@ -17,7 +17,25 @@ class TweeterView extends \mf\view\AbstractView {
      *  Retourne le fragment HTML de l'entête (unique pour toutes les vues)
      */ 
     private function renderHeader(){
-        return '<h1>MiniTweeTR</h1>';
+        $router = new \mf\router\Router();
+        $home = $router->urlFor('home');
+        $login = $router->urlFor('login');
+
+        $html = <<<HTML
+        <a href="$home"><h1>MiniTweeTR</h1></a>
+        <nav id="navbar">
+            <a class="tweet-control" href="$home">
+                <img alt="home" src="/html/home.png">
+            </a>
+            <a class="tweet-control" href="$login">
+                <img alt="login" src=/html/login.png>
+            </a>
+            <a class="tweet-control" href="#">
+                <img alt="signup" src=/html/signup.png>
+            </a>
+        </nav>
+        HTML;
+        return $html;
     }
     
     /* Méthode renderFooter
@@ -179,13 +197,25 @@ class TweeterView extends \mf\view\AbstractView {
          $result = <<<HTML
             <article class="theme-backcolor2">
                 <form method="POST" action="$urlPost">
-                    <textarea name="tweet_content" rows="7" cols="50" required></textarea>
-                    <br><br>
-                    <button type="submit" name="submit">Poster le Tweet</button>
+                    <textarea class="forms-text" name="tweet_content" rows="7" cols="50" required></textarea>
+                    <button class="forms-button" type="submit" name="submit">Poster le Tweet</button>
                 </form>
             </article>
          HTML;
          return $result;
+    }
+
+    protected function renderLogin() {
+        $result = <<<HTML
+            <article class="theme-backcolor2">
+                <form class="forms" method="POST">
+                    <input class="forms-text" type="text" name="username" placeholder="Nom d'utilisateur" required>
+                    <input class="forms-text" type="text" name="password" placeholder="Mot de passe" required>
+                    <button class="forms-button" type="submit" name="submit">Connexion</button>
+                </form>
+            </article>
+        HTML;
+        return $result;
     }
 
 
